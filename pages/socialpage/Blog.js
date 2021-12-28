@@ -20,12 +20,11 @@ import {
   faHeart,
   faShareSquare,
 } from "@fortawesome/free-solid-svg-icons";
-
+import Web3 from "web3";
 import { like_abi, like_address } from "../contracts/likeContract";
 import { mint_abi, mint_address } from "../contracts/mintContract";
 
-let Web3 = require('web3');
-let w3 = new Web3(ethereum);
+let w3 = new Web3(window.ethereum);
 let like_contract = new w3.eth.Contract(like_abi, like_address)
 let mint_contract = new w3.eth.Contract(mint_abi, mint_address)
 
@@ -61,7 +60,7 @@ function likeClick(_index, account){
       data : encoded,
   }
 
-  let txHash = ethereum.request({
+  let txHash =global.window.ethereum.request({
       method: 'eth_sendTransaction',
       params: [tx],
   }).then((hash) => {
@@ -81,7 +80,7 @@ function dislikeClick(_index, account){
       data : encoded,
   }
 
-  let txHash = ethereum.request({
+  let txHash =global.window.ethereum.request({
       method: 'eth_sendTransaction',
       params: [tx],
   }).then((hash) => {
@@ -100,8 +99,8 @@ const Blog = ({ id, src, caption, fileType, likeCtr, state }) => {
 
   useEffect( async() => {
     
-    window.ethereum ?
-      ethereum.request({ method: "eth_requestAccounts" }).then(async(accounts) => {
+   global.window.ethereum ?
+   global.window.ethereum.request({ method: "eth_requestAccounts" }).then(async(accounts) => {
         
         console.log(accounts[0])
         setAddress(accounts[0])

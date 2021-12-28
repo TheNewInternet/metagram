@@ -69,7 +69,7 @@ export default (req: NextApiRequest, res: NextApiResponse): Promise<any> => {
   return new Promise<void>((resolve) => {
     // const { account, type } = req.body;
     // TODO: validations
-    let image = "https://ipfs.io/ipfs/QmRFZbxe2jiqGYrL1dXGoT2b9gd4csybxSUAKY6mnSTCDc"
+    const image = "https://ipfs.io/ipfs/QmRFZbxe2jiqGYrL1dXGoT2b9gd4csybxSUAKY6mnSTCDc"
     const j = 
                 {
                 name: `🐷`,

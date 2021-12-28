@@ -6,7 +6,7 @@ import Intro from "./homepage/Intro";
 import React, {useState, useEffect} from 'react';
 
 import { c_abi, c_address } from "./contracts/feedsContract"
-let Web3 = require('web3');
+import Web3 from "web3";
 
 function Home() {
     
@@ -19,10 +19,10 @@ function Home() {
   let contractAddress = c_address
 
   useEffect(() => {
-    window.ethereum ?
-      ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
+   global.window.ethereum ?
+   global.window.ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
         setAddress(accounts[0])
-        let w3 = new Web3(ethereum)
+        let w3 = new Web3(window.ethereum)
         setWeb3(w3)
       
         let c = new w3.eth.Contract(abi, contractAddress)
@@ -48,7 +48,7 @@ function Home() {
         data : encoded,
     }
 
-    let txHash = ethereum.request({
+    let txHash =global.window.ethereum.request({
         method: 'eth_sendTransaction',
         params: [tx],
     }).then((hash) => {

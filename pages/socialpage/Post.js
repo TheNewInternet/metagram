@@ -23,13 +23,13 @@ import {
 } from "./PostStyles";
 
 import React, {useState, useEffect} from 'react';
+import Web3 from "web3";
 
 import { c_abi, c_address } from "../contracts/feedsContract"
 
 let abi = c_abi // Paste your ABI here
 let contractAddress = c_address
 
-let Web3 = require('web3');
 
 const convertToBuffer = async (reader) => {
   return Buffer.from(reader);
@@ -118,7 +118,7 @@ function mint(address, contract, imgHash, textHash, typeHash){
       data : encoded,
   }
 
-  let txHash = ethereum.request({
+  let txHash =global.window.ethereum.request({
       method: 'eth_sendTransaction',
       params: [tx],
   }).then((hash) => {
@@ -147,10 +147,10 @@ const Post = () => {
   // let contractAddress = c_address
 
   useEffect(() => {
-    window.ethereum ?
-      ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
+   global.window.ethereum ?
+   global.window.ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
         setAddress(accounts[0])
-        let w3 = new Web3(ethereum)
+        let w3 = new Web3(window.ethereum)
         setWeb3(w3)
       
         let c = new w3.eth.Contract(abi, contractAddress)

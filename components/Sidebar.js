@@ -16,7 +16,7 @@ const DropDown = ({ isOpen, toggle }) => {
 
   const ContactUs = (e) => {
     e.preventDefault();
-    window.open("https://www.instagram.com/astn.0820_/");
+    // global.window.open("https://www.instagram.com/astn.0820_/");
   };
 
   return (

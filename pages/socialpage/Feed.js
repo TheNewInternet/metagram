@@ -6,12 +6,12 @@ import React, {useState, useEffect} from 'react';
 
 import { c_abi, c_address } from "../contracts/feedsContract"
 import { like_abi, like_address } from "../contracts/likeContract";
-import { getHashes } from "crypto";
+import Web3 from "web3";
+
 
 let abi = c_abi // Paste your ABI here
 let contractAddress = c_address
 
-let Web3 = require('web3');
 
 let account
 
@@ -41,7 +41,7 @@ let account
 
 // function getPostHashById(id){
 //   let postHash = ''
-//   window.ethereum ?
+//  global.window.ethereum ?
 //     ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
 //       setAddress(accounts[0])
 //       let w3 = new Web3(ethereum)
@@ -119,7 +119,7 @@ const Feed = (address) => {
   // let contractAddress = c_address
 
   // useEffect(() => {
-  //   window.ethereum ?
+  //  global.window.ethereum ?
   //     ethereum.request({ method: "eth_requestAccounts" }).then((accounts) => {
   //       setAddress(accounts[0])
   //       let w3 = new Web3(ethereum)
@@ -139,8 +139,8 @@ const Feed = (address) => {
   
   useEffect( async() => {
     
-    window.ethereum ?
-      ethereum.request({ method: "eth_requestAccounts" }).then(async(accounts) => {
+   global.window.ethereum ?
+   global.window.ethereum.request({ method: "eth_requestAccounts" }).then(async(accounts) => {
         
         console.log(accounts[0])
         account = accounts[0]
@@ -157,7 +157,7 @@ const Feed = (address) => {
   }, [])
 
   const getLIkeAmount = async(account, _index) => {
-    let w3 = new Web3(ethereum)
+    let w3 = new Web3(window.ethereum)
     let like_contract = new w3.eth.Contract(like_abi, like_address)
     console.log(account)
     let test =  await like_contract.methods.searchLikeAmount(_index).call({from: account})
@@ -169,7 +169,7 @@ const Feed = (address) => {
 
     console.log(address)
     // loading = false;
-    let w3 = new Web3(ethereum)
+    let w3 = new Web3(window.ethereum)
     let contract = new w3.eth.Contract(abi, contractAddress)
   
     const posts = [];
@@ -214,7 +214,7 @@ const Feed = (address) => {
   
       for (let i = 0; i < postHashes.length; i += 1) {
       const likeInfo = await getLIkeAmount(address, i)
-      const res = await fetch(`https://ipfs.io/ipfs/${postHashes[i].img}`)
+      const res = await fetch(`https://cloudflare-ipfs.com/ipfs/${postHashes[i].img}`)
       const b64img = await res.text()
   console.log(b64img)
         posts.push({
@@ -239,7 +239,7 @@ const Feed = (address) => {
   return posts.map((post) => {
     const { id, src, caption, fileType, likeCtr, state } = post;
     return (
-      <StyledFeed
+      <StyledFeed  key={id}
         initial={{ opacity: 0, y: 60 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
